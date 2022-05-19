@@ -64,7 +64,7 @@ if $dryRun
     echo "Deploying $image_name}"
 
     aws ecs update-service \
-    --cluster "url-shortener" \
+    --cluster "url-shortener-api" \
     --service "$image_name" \
     --task-definition "${revision}" \
     --force-new-deployment
