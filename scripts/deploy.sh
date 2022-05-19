@@ -34,10 +34,10 @@ case $git_branch in
     ;;
 esac
 
-image_basename="$image_registry/$image_name-$environment"
+image_basename="$image_registry/$image_name"
 
-echo "Getting Task Definition for ${image_name}-$environment"
-aws ecs describe-task-definition --task-definition "${image_name}-$environment-task" --query taskDefinition > task-definition.json
+echo "Getting Task Definition for ${image_name}"
+aws ecs describe-task-definition --task-definition "${image_name}-task" --query taskDefinition > task-definition.json
 
 # echo "Installing JQ"
 # apt update && apt-get install -y jq
@@ -61,11 +61,11 @@ if $dryRun
 
 
     echo REVISION="$revision"
-    echo "Deploying $image_name-${environment}"
+    echo "Deploying $image_name}"
 
     aws ecs update-service \
     --cluster "url-shortener" \
-    --service "$image_name-${environment}" \
+    --service "$image_name}" \
     --task-definition "${revision}" \
     --force-new-deployment
 fi
