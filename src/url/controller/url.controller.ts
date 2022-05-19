@@ -1,4 +1,17 @@
-import {Body, Controller, Get, Param, Post, Response, UseFilters, UsePipes, ValidationPipe} from "@nestjs/common";
+import {
+    Body,
+    Controller,
+    Get,
+    HttpCode,
+    HttpStatus,
+    Param,
+    Post,
+    Res,
+    Response,
+    UseFilters,
+    UsePipes,
+    ValidationPipe
+} from "@nestjs/common";
 import {ShorteningUrlDto} from "../model/dto/shortening-url.dto";
 import {HttpExceptionsFilter} from "../exceptions/filters/http-exceptions-filter";
 import {UrlService} from "../service/url.service";
@@ -9,10 +22,18 @@ export class UrlController {
     constructor(private readonly urlService: UrlService) {
     }
 
+    @Get('/')
+    @HttpCode(200)
+     healthCheck(@Res() res: Response):string {
+        return 'Welcome to url Shortener'
+    }
+
     /**
      *
      * @param data
      */
+    @HttpCode(HttpStatus.CREATED)
+
     @Post('shorten')
     @UsePipes(ValidationPipe)
     @UseFilters(new HttpExceptionsFilter())
