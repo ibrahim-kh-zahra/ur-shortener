@@ -23,6 +23,7 @@ fi
 
 case $git_branch in
 
+
   master)
     environment="production"
     ;;
@@ -34,7 +35,7 @@ case $git_branch in
 esac
 
 
-image_basename="$image_registry/$image_name"
+image_basename="$image_registry/$image_name-$environment"
 
 # Tagging image as latest and as specific commit version
 echo "Building image: ${image_name} with tags [latest, ${image_tag}]"
