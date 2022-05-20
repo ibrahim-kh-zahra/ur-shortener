@@ -17,15 +17,9 @@ import {HttpExceptionsFilter} from "../exceptions/filters/http-exceptions-filter
 import {UrlService} from "../service/url.service";
 import {UrlStatsDto} from "../model/dto/url-stats.dto";
 
-@Controller('url')
+@Controller('/url')
 export class UrlController {
     constructor(private readonly urlService: UrlService) {
-    }
-
-    @Get('/')
-    @HttpCode(200)
-     healthCheck(@Res() res: Response):string {
-        return 'Welcome to url Shortener'
     }
 
     /**

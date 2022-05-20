@@ -1,10 +1,13 @@
 import {Prop, Schema, SchemaFactory} from '@nestjs/mongoose';
-import {Document} from 'mongoose';
+import {Document, ObjectId} from 'mongoose';
+import mongoose from "mongoose";
 
 export type UrlEntityDocument = UrlEntity & Document;
 
 @Schema({collection: 'url'})
 export class UrlEntity {
+    @Prop({ type: mongoose.Schema.Types.ObjectId, name: 'id' })
+    id:ObjectId
     @Prop()
     shortCode: string;
     @Prop()

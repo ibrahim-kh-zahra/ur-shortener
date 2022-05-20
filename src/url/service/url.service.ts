@@ -10,10 +10,9 @@ import {EntityNotFoundException} from "../exceptions/entity-not-found.exception"
 @Injectable()
 export class UrlService {
     private readonly logger = new Logger(UrlService.name);
-
-    constructor(private readonly generatorService: UniqueIdGeneratorService,
-                @InjectModel(UrlEntity.name) private readonly urlEntityRepository: Model<UrlEntityDocument>,
-    ) {
+    private readonly  generatorService: UniqueIdGeneratorService=new UniqueIdGeneratorService();
+    constructor(
+        @InjectModel(UrlEntity.name) private readonly urlEntityRepository: Model<UrlEntityDocument>) {
     }
 
     /**
@@ -22,7 +21,7 @@ export class UrlService {
      * New short code and follow internal regex expression
      * @param shorteningUrlDto
      */
-    public async shortenUrl(shorteningUrlDto: ShorteningUrlDto) {
+    public async shortenUrl(shorteningUrlDto: ShorteningUrlDto):Promise<UrlEntity> {
         let shortCode = shorteningUrlDto.shortCode;
         if (shortCode && shortCode.length > 0) {
             await this.validateUserShortCode(shortCode)
@@ -51,8 +50,9 @@ export class UrlService {
      * @param urlEntity
      */
 
-    public async updateUrl(urlEntity: UrlEntity) {
-        return this.urlEntityRepository.updateOne(urlEntity);
+    public async updateUrl(urlEntity: UrlEntity):Promise<Boolean> {
+         await this.urlEntityRepository.findByIdAndUpdate(urlEntity.id,urlEntity);
+         return true;
 
     }
 
@@ -89,12 +89,12 @@ export class UrlService {
     }
 
     /**
-     *
+     *Validation consists of two steps,
+     * new shortcode & follow internal regex
      * @param shortCode
      */
     private async validateUserShortCode(shortCode: string) {
         //Validate existence in the DB
-
         const urlEntity = await this.findByShortCode(shortCode);
         if (urlEntity) {
             throw new HttpException("Short code already exist", 409);
